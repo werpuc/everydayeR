@@ -1,17 +1,21 @@
 library(readr)
 library(tidyr)
+library(dplyr)
 
-can.be.date <- function(x){
-  
-  assign("check", TRUE, env = globalenv())
+filename <- "..."
+
+dat <- read.csv2(filename)
+
+can.be.date <- function(x, ...){
   
   tryCatch(
-    as.Date(x),
+    return(inherits(as.Date(x), 'Date')),
     error = function(e){
-      assign("check", FALSE, env=globalenv())
-    },
-    finally = {
-      return(get("check", env=globalenv()))
+      return(FALSE)
     }
   )
+  
 }
+
+apply(dat["Lista.transakcji"], 1, can.be.date)
+
